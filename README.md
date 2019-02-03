@@ -14,7 +14,7 @@ How To Install
 ### Prerequisites 
 * Have a Kubernetes cluster, be able to SSH to the nodes in your cluster
 * Have your `kubeconfig` command line set up to talk to your cluster
-* Have your cluster admin
+* Have cluster admin privileges on this cluster
 * Clone this repository to your computer
 
 ### Step 1: Create a directory for local files
@@ -30,7 +30,7 @@ sudo chmod 777 "/mnt/local-volumes/minecraft"
 Get the kubernetes node name name of the host machine
 on which you just added the directory.
 
-Edit 02-volume-local.yaml. Update Line 17 to include the 
+Edit [20-volume-local.yaml](20-volume-local.yaml#L17). Update Line 17 to include the 
 host path. Update line 25 to include the kubernetes node name
 
 ### Step 2: Configure your Minecraft Server
@@ -39,13 +39,13 @@ The [itzg Minecraft Server Docker Image](https://hub.docker.com/r/itzg/minecraft
 allows you to configure settings in the minecraft
 server by setting environment variables. 
 
-You can edit [30-deployment-local.yaml] to add or
+You can edit [30-deployment-local.yaml](30-deployment-local.yaml#L30) to add or
 change environment variables for your purposes. See lines 30-35 for examples. See the minecraft-server docker image page for documentation on configuring your server.
 
 
 ### Step 3: Apply Kubernetes Configurations
 
-Now, Apply the configuration to Kubernetes
+Now, apply the configuration to Kubernetes
 
 ```bash
 kubectl apply -f 00-namespace.yaml
@@ -58,7 +58,7 @@ kubectl apply -f 40-service-nodeport.yaml
 ### Step 4: Connect
 
 We have created a node-port service, which means
-that you can connect to any node in your kubernetes cluster on port `30565` (declared in [40-service-nodeport.yaml]) to attach to this minecraft server. Suppose that your kubernetes node has a public
+that you can connect to any node in your kubernetes cluster on port `30565` (declared in [40-service-nodeport.yaml](40-service-nodeport.yaml#L12)) to attach to this minecraft server. Suppose that your kubernetes node has a public
 ip address of 192.168.1.203.  When you configure your
 minecraft server, connect to `192.168.1.203:30565`
 
