@@ -8,7 +8,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: {{ .Values.minecraft.port }}
-      nodePort: 30565
+    - port: 30565
+      nodePort: {{ .Values.minecraft.port }}
   selector:
     app: minecraft-server
