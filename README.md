@@ -3,7 +3,9 @@ Minecraft Server in Kubernetes
 
 This demonstrates how to run Minecraft in Kubernetes. It builds on the work of 
 the [itzg Minecraft Server Docker Image](https://hub.docker.com/r/itzg/minecraft-server/) 
-to create a docker container in kubernetes
+to create a docker container in kubernetes.
+
+We also use Helm to make installation, and customization, a breeze.
 
 This repository demonstrates how to run in a local kubernetes cluster using
 local disks. 
@@ -13,6 +15,7 @@ How To Install
 
 ### Prerequisites 
 * Have a Kubernetes cluster, be able to SSH to the nodes in your cluster
+* Have Helm installed
 * Have your `kubeconfig` command line set up to talk to your cluster
 * Have cluster admin privileges on this cluster
 * Clone this repository to your computer
@@ -20,6 +23,8 @@ How To Install
 ### Step 1: Create a directory for local files
 
 SSH to one of the nodes in your kubernetes cluster. Create a directory where you want Minecraft files to exist.
+
+Example:
 
 ```bash
 ssh your_kubernetes_host
@@ -30,8 +35,8 @@ sudo chmod 777 "/mnt/local-volumes/minecraft"
 Get the kubernetes node name name of the host machine
 on which you just added the directory.
 
-Edit [20-volume-local.yaml](20-volume-local.yaml#L17). Update Line 17 to include the 
-host path. Update line 25 to include the kubernetes node name
+Edit [values.yaml](helm/minecraft/values.yaml#L7). Update Line 7 to your node's hostname.
+If you used a different path for your worldfile, update volume.path in [values.yaml](helm/minecraft/values.yaml#L17).
 
 ### Step 2: Configure your Minecraft Server
 
@@ -39,20 +44,18 @@ The [itzg Minecraft Server Docker Image](https://hub.docker.com/r/itzg/minecraft
 allows you to configure settings in the minecraft
 server by setting environment variables. 
 
-You can edit [30-deployment-local.yaml](30-deployment-local.yaml#L30) to add or
+You can edit [helm/minecraft/deployment.yaml](helm/minecraft/deployment.yaml#L1) to add or
 change environment variables for your purposes. See lines 30-35 for examples. See the minecraft-server docker image page for documentation on configuring your server.
 
+We've included just a couple of the most common configurations in [values.yaml](helm/minecraft/values.yaml#L10) like gamemode, message of the day, and port.
 
-### Step 3: Apply Kubernetes Configurations
 
-Now, apply the configuration to Kubernetes
+### Step 3: Helm install
+
+Now, apply the configuration to Kubernetes. `cd` to the project root and run:
 
 ```bash
-kubectl apply -f 00-namespace.yaml
-kubectl apply -f 10-volume-claim-local.yaml
-kubectl apply -f 20-volume-local.yaml
-kubectl apply -f 30-deployment-local.yaml
-kubectl apply -f 40-service-nodeport.yaml
+helm install minecraft --generate-name
 ```
 
 ### Step 4: Connect
