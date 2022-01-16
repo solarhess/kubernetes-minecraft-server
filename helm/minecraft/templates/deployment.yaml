@@ -38,7 +38,7 @@ spec:
           - name: ALLOW_FLIGHT
             value: 'TRUE'
         ports:
-        - containerPort: 30565
+        - containerPort: {{ .Values.minecraft.port }}
           name: minecraft
         volumeMounts:
           - name: minecraft-data
