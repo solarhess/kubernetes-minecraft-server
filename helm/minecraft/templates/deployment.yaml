@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: minecraft-server
-  namespace: minecraft
   labels:
     app: minecraft-server
 spec:

@@ -55,7 +55,7 @@ We've included just a couple of the most common configurations in [values.yaml](
 Now, apply the configuration to Kubernetes. `cd` to the project root and run:
 
 ```bash
-helm install minecraft --generate-name
+helm install minecraft helm/minecraft --namespace minecraft --create-namespace
 ```
 
 ### Step 4: Connect
