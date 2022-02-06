@@ -13,8 +13,7 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   local:
-    # Edit this to be an actual path on your server's filesystem
-    path: /mnt/local-volumes/minecraft 
+    path: {{ .Values.volume.path }} 
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -22,4 +21,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - dell3 # Edit this to be an actual kubernetes name of your server
+          - {{ .Values.node.hostname }}

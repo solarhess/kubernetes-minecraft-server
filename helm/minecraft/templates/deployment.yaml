@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: minecraft-server
-  namespace: minecraft
   labels:
     app: minecraft-server
 spec:
@@ -25,20 +24,20 @@ spec:
         image: itzg/minecraft-server:latest
         resources:
           limits:
-            memory: 2Gi
+            memory: {{ .Values.resources.limits.memory }}
           requests:
-            memory: 1.5Gi
+            memory: {{ .Values.resources.requests.memory }}
         env:
           - name:  EULA
             value: 'TRUE'
           - name: MODE
-            value: creative
+            value: {{ .Values.minecraft.gamemode }}
           - name: MOTD
-            value: Your super-cool minecraft server
+            value: {{ .Values.minecraft.motd }}
           - name: ALLOW_FLIGHT
             value: 'TRUE'
         ports:
-        - containerPort: 25565
+        - containerPort: {{ .Values.minecraft.port }}
           name: minecraft
         volumeMounts:
           - name: minecraft-data
