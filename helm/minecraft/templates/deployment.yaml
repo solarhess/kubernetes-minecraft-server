@@ -7,6 +7,8 @@ metadata:
     app: minecraft-server
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: minecraft-server
@@ -23,10 +25,9 @@ spec:
       - name: minecraft-server
         image: itzg/minecraft-server:latest
         resources:
-          limits:
-            memory: {{ .Values.resources.limits.memory }}
           requests:
             memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
         env:
           - name:  EULA
             value: 'TRUE'
@@ -35,7 +36,7 @@ spec:
           - name: MOTD
             value: {{ .Values.minecraft.motd }}
           - name: ALLOW_FLIGHT
-            value: 'TRUE'
+            value: 'FALSE'
         ports:
         - containerPort: {{ .Values.minecraft.port }}
           name: minecraft
