@@ -1,11 +1,12 @@
 # docker run -d -it -v /path/on/host:/data -e EULA=TRUE -p 25565:25565 --name mc itzg/minecraft-server
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: minecraft-server
   labels:
     app: minecraft-server
 spec:
+  serviceName: minecraft-server
   replicas: 1
   selector:
     matchLabels:
@@ -18,15 +19,14 @@ spec:
       volumes:
       - name: minecraft-data
         persistentVolumeClaim:
-          claimName: minecraft-data-pvc
+          claimName: minecraft-data-pvc-csi
       containers:
       - name: minecraft-server
         image: itzg/minecraft-server:latest
         resources:
-          limits:
-            memory: {{ .Values.resources.limits.memory }}
           requests:
             memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
         env:
           - name:  EULA
             value: 'TRUE'
@@ -35,7 +35,9 @@ spec:
           - name: MOTD
             value: {{ .Values.minecraft.motd }}
           - name: ALLOW_FLIGHT
-            value: 'TRUE'
+            value: 'FALSE'
+          - name: VIEW_DISTANCE
+            value: '16'
         ports:
         - containerPort: {{ .Values.minecraft.port }}
           name: minecraft
