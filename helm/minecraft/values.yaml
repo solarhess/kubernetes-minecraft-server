@@ -8,7 +8,7 @@ minecraft:
   port: 25565
 
 volume:
-  storage: 3Gi
+  storage: 2Gi
   path: '/home/local-volumes/minecraft' # Path to wherever you want to save your worldfile
 
 resources:

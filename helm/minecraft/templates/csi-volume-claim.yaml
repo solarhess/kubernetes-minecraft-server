@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: minecraft-data-pvc-csi
+  namespace: minecraft
+spec:
+  storageClassName: csi-local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.volume.storage }}
